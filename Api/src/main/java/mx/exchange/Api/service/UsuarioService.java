@@ -14,8 +14,8 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public void crearUsuario(CrearUsuarioDTO usuario){
-        usuarioRepository.save(new Usuario(usuario));
+    public Usuario crearUsuario(CrearUsuarioDTO usuario){
+        return usuarioRepository.save(new Usuario(usuario));
     }
 
 }
