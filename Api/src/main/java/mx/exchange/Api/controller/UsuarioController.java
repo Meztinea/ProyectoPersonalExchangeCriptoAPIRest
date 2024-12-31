@@ -4,12 +4,10 @@ import jakarta.validation.Valid;
 import mx.exchange.Api.domain.Usuario;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
+import mx.exchange.Api.repository.UsuarioRepository;
 import mx.exchange.Api.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -32,5 +30,12 @@ public class UsuarioController {
         URI url = uriComponentsBuilder.path("/usuarios/consultar/{id}")
                 .buildAndExpand(nuevoUsuario.getId()).toUri();
         return ResponseEntity.created(url).body(mostrarUsuario);
+    }
+
+    @GetMapping("/consultar/{id}")
+    public ResponseEntity<MostrarUsuarioDTO> consultarUsuario(@PathVariable Long id){
+        Usuario usuario = usuarioService.consultarUsuarioPorId(id);
+        MostrarUsuarioDTO mostrarUsuario = new MostrarUsuarioDTO(usuario);
+        return ResponseEntity.ok(mostrarUsuario);
     }
 }
