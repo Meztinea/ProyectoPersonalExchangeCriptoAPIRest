@@ -29,7 +29,7 @@ public class UsuarioController {
                                            UriComponentsBuilder uriComponentsBuilder){
         Usuario nuevoUsuario = usuarioService.crearUsuario(usuario);
         MostrarUsuarioDTO mostrarUsuario = new MostrarUsuarioDTO(nuevoUsuario);
-        URI url = UriComponentsBuilder.fromPath("/usuarios/consultar/{id}")
+        URI url = uriComponentsBuilder.path("/usuarios/consultar/{id}")
                 .buildAndExpand(nuevoUsuario.getId()).toUri();
         return ResponseEntity.created(url).body(mostrarUsuario);
     }
