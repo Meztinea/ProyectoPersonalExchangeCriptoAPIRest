@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
 import mx.exchange.Api.service.UsuarioService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,4 +37,10 @@ public class UsuarioController {
         MostrarUsuarioDTO nuevoUsuario = usuarioService.consultarUsuarioPorId(id);
         return ResponseEntity.ok(nuevoUsuario);
     }
+
+    @GetMapping("/consultar")
+    public Page<MostrarUsuarioDTO> consultarUsuarios(@PageableDefault(size = 3) Pageable paginacion){
+        return usuarioService.consultarUsuarios(paginacion);
+    }
+
 }
