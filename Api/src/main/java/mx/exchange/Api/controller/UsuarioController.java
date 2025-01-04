@@ -1,10 +1,8 @@
 package mx.exchange.Api.controller;
 
 import jakarta.validation.Valid;
-import mx.exchange.Api.domain.Usuario;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
-import mx.exchange.Api.repository.UsuarioRepository;
 import mx.exchange.Api.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,17 +23,15 @@ public class UsuarioController {
     @PostMapping("/crear")
     public ResponseEntity<MostrarUsuarioDTO> registrarUsuario(@RequestBody @Valid CrearUsuarioDTO usuario,
                                            UriComponentsBuilder uriComponentsBuilder){
-        Usuario nuevoUsuario = usuarioService.crearUsuario(usuario);
-        MostrarUsuarioDTO mostrarUsuario = new MostrarUsuarioDTO(nuevoUsuario);
+        MostrarUsuarioDTO nuevoUsuario = usuarioService.crearUsuario(usuario);
         URI url = uriComponentsBuilder.path("/usuarios/consultar/{id}")
-                .buildAndExpand(nuevoUsuario.getId()).toUri();
-        return ResponseEntity.created(url).body(mostrarUsuario);
+                .buildAndExpand(nuevoUsuario.id()).toUri();
+        return ResponseEntity.created(url).body(nuevoUsuario);
     }
 
     @GetMapping("/consultar/{id}")
     public ResponseEntity<MostrarUsuarioDTO> consultarUsuario(@PathVariable Long id){
-        Usuario usuario = usuarioService.consultarUsuarioPorId(id);
-        MostrarUsuarioDTO mostrarUsuario = new MostrarUsuarioDTO(usuario);
-        return ResponseEntity.ok(mostrarUsuario);
+        MostrarUsuarioDTO nuevoUsuario = usuarioService.consultarUsuarioPorId(id);
+        return ResponseEntity.ok(nuevoUsuario);
     }
 }
