@@ -1,9 +1,12 @@
 package mx.exchange.Api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import mx.exchange.Api.dto.ActualizarUsuarioDTO;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
 import mx.exchange.Api.service.UsuarioService;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,5 +45,15 @@ public class UsuarioController {
     public Page<MostrarUsuarioDTO> consultarUsuarios(@PageableDefault(size = 3) Pageable paginacion){
         return usuarioService.consultarUsuarios(paginacion);
     }
+
+    @PutMapping("/actualizar")
+    @Transactional
+    public ResponseEntity<ActualizarUsuarioDTO> actualizarUsuario(@RequestBody @Valid ActualizarUsuarioDTO u){
+        ActualizarUsuarioDTO usuario = usuarioService.actualizarUsuario(u);
+        return ResponseEntity.ok(usuario);
+    }
+
+
+
 
 }

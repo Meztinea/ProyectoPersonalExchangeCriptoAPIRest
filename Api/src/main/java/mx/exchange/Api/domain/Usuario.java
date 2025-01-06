@@ -2,6 +2,7 @@ package mx.exchange.Api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mx.exchange.Api.dto.ActualizarUsuarioDTO;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,20 @@ public class Usuario {
         this.telefono = usuario.telefono();
         this.correoElectronico = usuario.correoElectronico();
         this.fechaCreacion = LocalDateTime.now();
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
+    public void actualizarDatos(ActualizarUsuarioDTO usuario){
+
+        if (usuario.nombre() != null)
+            this.nombre = usuario.nombre();
+
+        if(usuario.telefono() != null)
+            this.telefono = usuario.telefono();
+
+        if (usuario.correoElectronico() != null)
+            this.correoElectronico = usuario.correoElectronico();
+
         this.fechaActualizacion = LocalDateTime.now();
     }
 }
