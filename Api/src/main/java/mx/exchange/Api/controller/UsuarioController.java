@@ -53,7 +53,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
-
+    @PatchMapping("/actualizar")
+    @Transactional
+    public ResponseEntity<ActualizarUsuarioDTO> actualizarParcialUsuario(@RequestBody @Valid ActualizarUsuarioDTO u){
+        ActualizarUsuarioDTO usuario = usuarioService.actualizarUsuario(u);
+        return ResponseEntity.ok(usuario);
+    }
 
 
 }
