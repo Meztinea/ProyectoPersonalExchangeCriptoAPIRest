@@ -36,4 +36,7 @@ public class UsuarioService {
         return new ActualizarUsuarioDTO(usuario);
     }
 
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
+    }
 }
