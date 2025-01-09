@@ -6,7 +6,6 @@ import mx.exchange.Api.dto.ActualizarUsuarioDTO;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
 import mx.exchange.Api.service.UsuarioService;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,8 +41,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/consultar")
-    public Page<MostrarUsuarioDTO> consultarUsuarios(@PageableDefault(size = 3) Pageable paginacion){
-        return usuarioService.consultarUsuarios(paginacion);
+    public ResponseEntity<Page<MostrarUsuarioDTO>> consultarUsuarios(@PageableDefault(size = 3) Pageable paginacion){
+        Page<MostrarUsuarioDTO> listaUsuarios = usuarioService.consultarUsuarios(paginacion);
+        return ResponseEntity.ok(listaUsuarios);
     }
 
     @PutMapping("/actualizar")
@@ -60,5 +60,11 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
+    @DeleteMapping("/eliminar/{id}")
+    @Transactional
+    public ResponseEntity eliminarUsuario(@PathVariable Long id){
+        usuarioService.eliminarUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
