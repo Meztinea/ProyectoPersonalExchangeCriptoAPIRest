@@ -2,6 +2,7 @@ package mx.exchange.Api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 
 import java.time.LocalDateTime;
 
@@ -29,4 +30,12 @@ public class Criptomoneda {
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    public Criptomoneda(CrearCriptomonedaDTO criptomonedaDTO){
+        this.ticker = criptomonedaDTO.ticker();
+        this.precioActual = criptomonedaDTO.precioActual();
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
 }
