@@ -6,6 +6,8 @@ import mx.exchange.Api.repository.CriptomonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CriptomonedaService {
 
@@ -17,7 +19,10 @@ public class CriptomonedaService {
     }
 
     public CrearCriptomonedaDTO crearCriptomoneda(CrearCriptomonedaDTO criptomonedaDTO){
-
         return new CrearCriptomonedaDTO(criptomonedaRepository.save(new Criptomoneda(criptomonedaDTO)));
+    }
+
+    public CrearCriptomonedaDTO consultarCriptomoneda(String ticker){
+        return criptomonedaRepository.findByTicker(ticker);
     }
 }

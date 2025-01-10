@@ -5,10 +5,7 @@ import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.service.CriptomonedaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -32,4 +29,11 @@ public class CriptomonedaController {
                 .buildAndExpand(criptomonedaDTO.ticker()).toUri();
         return ResponseEntity.created(url).body(nuevaCriptomoneda);
     }
+
+    @GetMapping("/{ticker}")
+    public ResponseEntity<CrearCriptomonedaDTO> consultarCriptomoneda(@PathVariable String ticker){
+        CrearCriptomonedaDTO criptomoneda = criptomonedaService.consultarCriptomoneda(ticker);
+        return ResponseEntity.ok().body(criptomoneda);
+    }
+
 }
