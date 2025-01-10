@@ -1,5 +1,6 @@
 package mx.exchange.Api.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import mx.exchange.Api.domain.Criptomoneda;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.repository.CriptomonedaRepository;
@@ -23,6 +24,8 @@ public class CriptomonedaService {
     }
 
     public CrearCriptomonedaDTO consultarCriptomoneda(String ticker){
-        return criptomonedaRepository.findByTicker(ticker);
+        return criptomonedaRepository.findByTicker(ticker).map(criptomoneda ->
+                new CrearCriptomonedaDTO(criptomoneda.getTicker(), criptomoneda.getPrecioActual()))
+                .orElseThrow(() -> new EntityNotFoundException("Criptomoneda no encontrada"));
     }
 }
