@@ -5,6 +5,7 @@ import mx.exchange.Api.domain.Criptomoneda;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.repository.CriptomonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,6 +21,8 @@ public class CriptomonedaService {
     }
 
     public CrearCriptomonedaDTO crearCriptomoneda(CrearCriptomonedaDTO criptomonedaDTO){
+        if (criptomonedaRepository.existsByTicker(criptomonedaDTO.ticker()))
+            throw new DuplicateKeyException("El ticker: " + criptomonedaDTO.ticker() + " ya está registrado.");
         return new CrearCriptomonedaDTO(criptomonedaRepository.save(new Criptomoneda(criptomonedaDTO)));
     }
 

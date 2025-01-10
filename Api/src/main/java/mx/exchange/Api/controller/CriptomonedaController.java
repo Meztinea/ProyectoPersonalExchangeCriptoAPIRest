@@ -1,5 +1,6 @@
 package mx.exchange.Api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.service.CriptomonedaService;
@@ -22,6 +23,7 @@ public class CriptomonedaController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<CrearCriptomonedaDTO> crearCriptomoneda(@RequestBody @Valid CrearCriptomonedaDTO criptomonedaDTO,
                                                                   UriComponentsBuilder uriComponentsBuilder){
         CrearCriptomonedaDTO nuevaCriptomoneda = criptomonedaService.crearCriptomoneda(criptomonedaDTO);
