@@ -5,6 +5,7 @@ import mx.exchange.Api.dto.ActualizarUsuarioDTO;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 import mx.exchange.Api.dto.MostrarUsuarioDTO;
 import mx.exchange.Api.repository.UsuarioRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class UsuarioService {
     }
 
     public MostrarUsuarioDTO crearUsuario(CrearUsuarioDTO usuario){
+        if (usuarioRepository.existsByCorreoElectronico(usuario.correoElectronico()))
+            throw new DuplicateKeyException("El correo electrónico: " + usuario.correoElectronico()
+            + " ya está en uso.");
         return new MostrarUsuarioDTO(usuarioRepository.save(new Usuario(usuario)));
     }
 
