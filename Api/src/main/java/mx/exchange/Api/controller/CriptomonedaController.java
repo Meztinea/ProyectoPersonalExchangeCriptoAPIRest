@@ -1,7 +1,9 @@
 package mx.exchange.Api.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import mx.exchange.Api.dto.ActualizarCriptomonedaDTO;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.service.CriptomonedaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,13 @@ public class CriptomonedaController {
     @GetMapping("/{ticker}")
     public ResponseEntity<CrearCriptomonedaDTO> consultarCriptomoneda(@PathVariable String ticker){
         CrearCriptomonedaDTO criptomoneda = criptomonedaService.consultarCriptomoneda(ticker);
+        return ResponseEntity.ok().body(criptomoneda);
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<ActualizarCriptomonedaDTO> actualizarCriptomoneda(@RequestBody ActualizarCriptomonedaDTO criptomonedaDTO){
+        ActualizarCriptomonedaDTO criptomoneda = criptomonedaService.actualizarCriptomoneda(criptomonedaDTO);
         return ResponseEntity.ok().body(criptomoneda);
     }
 

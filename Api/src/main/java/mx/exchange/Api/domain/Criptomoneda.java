@@ -2,9 +2,11 @@ package mx.exchange.Api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mx.exchange.Api.dto.ActualizarCriptomonedaDTO;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Table(name = "criptomonedas")
 @Entity(name = "Criptomoneda")
@@ -32,10 +34,14 @@ public class Criptomoneda {
     private LocalDateTime fechaActualizacion;
 
     public Criptomoneda(CrearCriptomonedaDTO criptomonedaDTO){
-        this.ticker = criptomonedaDTO.ticker();
+        this.ticker = criptomonedaDTO.ticker().toUpperCase(Locale.ENGLISH);
         this.precioActual = criptomonedaDTO.precioActual();
         this.fechaCreacion = LocalDateTime.now();
         this.fechaActualizacion = LocalDateTime.now();
     }
 
+    public void actualizarTicker(ActualizarCriptomonedaDTO criptomonedaDTO) {
+        this.ticker = criptomonedaDTO.ticker().toUpperCase(Locale.ENGLISH);
+        this.fechaActualizacion = LocalDateTime.now();
+    }
 }

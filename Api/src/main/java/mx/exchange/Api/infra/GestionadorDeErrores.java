@@ -22,8 +22,9 @@ public class GestionadorDeErrores {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity gestionarError404(){
-        return ResponseEntity.notFound().build();
+    public ResponseEntity gestionarError404(EntityNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+                //ResponseEntity.notFound(ex.getMessage()).build();
     }
 
     @ExceptionHandler(AccessDeniedException.class)
