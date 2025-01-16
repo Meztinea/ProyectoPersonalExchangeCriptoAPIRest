@@ -1,6 +1,7 @@
 package mx.exchange.Api.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import mx.exchange.Api.configurations.RestTemplateConfig;
 import mx.exchange.Api.domain.Criptomoneda;
 import mx.exchange.Api.dto.ActualizarCriptomonedaDTO;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
@@ -10,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.client.RestTemplate;
 
 
 @Service
@@ -17,9 +19,12 @@ public class CriptomonedaService {
 
     @Autowired
     private final CriptomonedaRepository criptomonedaRepository;
+    private final RestTemplateConfig restTemplate;
 
-    public CriptomonedaService(CriptomonedaRepository criptomonedaRepository) {
+    public CriptomonedaService(CriptomonedaRepository criptomonedaRepository,
+                               RestTemplateConfig restTemplate) {
         this.criptomonedaRepository = criptomonedaRepository;
+        this.restTemplate = restTemplate;
     }
 
     public CrearCriptomonedaDTO crearCriptomoneda(CrearCriptomonedaDTO criptomonedaDTO) {
@@ -46,7 +51,8 @@ public class CriptomonedaService {
     @Async
     @Scheduled(fixedDelay = 6000)
     public void actualizarPrecioCriptomonedas(){
-        System.out.println("Hola");
+
+
     }
 
 }
