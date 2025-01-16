@@ -7,7 +7,9 @@ import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.repository.CriptomonedaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
 
 
 @Service
@@ -39,6 +41,12 @@ public class CriptomonedaService {
         Criptomoneda criptomoneda = criptomonedaRepository.getReferenceById(criptomonedaDTO.id());
         criptomoneda.actualizarTicker(criptomonedaDTO);
         return new ActualizarCriptomonedaDTO(criptomoneda);
+    }
+
+    @Async
+    @Scheduled(fixedDelay = 6000)
+    public void actualizarPrecioCriptomonedas(){
+        System.out.println("Hola");
     }
 
 }
