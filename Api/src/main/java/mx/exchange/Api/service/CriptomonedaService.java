@@ -13,9 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class CriptomonedaService {
+
+    private static List<Criptomoneda> listaCriptomonedas = new ArrayList<>();
 
     @Autowired
     private final CriptomonedaRepository criptomonedaRepository;
@@ -52,6 +58,16 @@ public class CriptomonedaService {
     @Scheduled(fixedDelay = 6000)
     public void actualizarPrecioCriptomonedas(){
 
+        // Si se agregó una nueva criptomoneda a la base de datos, se actualiza la lista con todas las criptos
+        if(listaCriptomonedas.isEmpty() || listaCriptomonedas.size() != criptomonedaRepository.count())
+            listaCriptomonedas = criptomonedaRepository.findAll();
+
+
+        for (Criptomoneda c : listaCriptomonedas){
+
+            System.out.println(c.getPrecioActual());
+
+        }
 
     }
 
