@@ -3,7 +3,9 @@ package mx.exchange.Api.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import mx.exchange.Api.dto.ActualizarCriptomonedaDTO;
+import mx.exchange.Api.dto.ActualizarPrecioCriptomonedaDTO;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -42,6 +44,11 @@ public class Criptomoneda {
 
     public void actualizarTicker(ActualizarCriptomonedaDTO criptomonedaDTO) {
         this.ticker = criptomonedaDTO.ticker().toUpperCase(Locale.ENGLISH);
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
+    public void actualizarPrecio(ActualizarPrecioCriptomonedaDTO criptomonedaDTO){
+        this.precioActual = criptomonedaDTO.payload().ultimoPrecio();
         this.fechaActualizacion = LocalDateTime.now();
     }
 }
