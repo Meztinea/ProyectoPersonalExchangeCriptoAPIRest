@@ -10,6 +10,8 @@ import mx.exchange.Api.repository.CriptomonedaRepository;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -47,6 +49,10 @@ public class CriptomonedaService {
                 .orElseThrow(() -> new EntityNotFoundException("Criptomoneda no encontrada"));
     }
 
+    public Page<CrearCriptomonedaDTO> consultarCriptomonedas(Pageable paginacion){
+        return criptomonedaRepository.findAll(paginacion).map(CrearCriptomonedaDTO::new);
+    }
+
     public ActualizarCriptomonedaDTO actualizarCriptomoneda(ActualizarCriptomonedaDTO criptomonedaDTO) {
         if (!criptomonedaRepository.existsById(criptomonedaDTO.id()))
             throw new EntityNotFoundException("El ticker con id: " + criptomonedaDTO.id() +
@@ -57,7 +63,7 @@ public class CriptomonedaService {
     }
 
     @Async
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 300000)
     @Transactional
     public void actualizarPrecioCriptomonedas(){
 
