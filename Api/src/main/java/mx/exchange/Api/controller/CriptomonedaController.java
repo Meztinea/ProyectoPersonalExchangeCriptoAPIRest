@@ -56,4 +56,10 @@ public class CriptomonedaController {
         return ResponseEntity.ok().body(criptomoneda);
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarCriptomoneda(@PathVariable Long id){
+        criptomonedaService.eliminarCriptomoneda(id);
+        return ResponseEntity.noContent().build();
+    }
 }

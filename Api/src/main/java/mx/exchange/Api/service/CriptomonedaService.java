@@ -90,4 +90,7 @@ public class CriptomonedaService {
         }
     }
 
+    public void eliminarCriptomoneda(Long id) {
+        criptomonedaRepository.deleteById(id);
+    }
 }
