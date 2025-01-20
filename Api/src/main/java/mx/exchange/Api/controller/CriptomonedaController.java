@@ -1,15 +1,18 @@
 package mx.exchange.Api.controller;
 
-import jakarta.persistence.EntityNotFoundException;
+
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import mx.exchange.Api.dto.ActualizarCriptomonedaDTO;
 import mx.exchange.Api.dto.CrearCriptomonedaDTO;
 import mx.exchange.Api.service.CriptomonedaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.net.URI;
 
@@ -40,6 +43,12 @@ public class CriptomonedaController {
         return ResponseEntity.ok().body(criptomoneda);
     }
 
+    @GetMapping
+    public ResponseEntity <Page<CrearCriptomonedaDTO>> consultarCriptomonedas(Pageable paginacion){
+        Page<CrearCriptomonedaDTO> listaCriptomonedas = criptomonedaService.consultarCriptomonedas(paginacion);
+        return ResponseEntity.ok().body(listaCriptomonedas);
+    }
+
     @PutMapping
     @Transactional
     public ResponseEntity<ActualizarCriptomonedaDTO> actualizarCriptomoneda(@RequestBody ActualizarCriptomonedaDTO criptomonedaDTO){
@@ -47,4 +56,10 @@ public class CriptomonedaController {
         return ResponseEntity.ok().body(criptomoneda);
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarCriptomoneda(@PathVariable Long id){
+        criptomonedaService.eliminarCriptomoneda(id);
+        return ResponseEntity.noContent().build();
+    }
 }
