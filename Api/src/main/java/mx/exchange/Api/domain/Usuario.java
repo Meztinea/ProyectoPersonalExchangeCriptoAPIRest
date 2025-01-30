@@ -31,7 +31,7 @@ public class Usuario {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
-    @OneToMany()
+    @OneToMany(targetEntity = Billetera.class, fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<Billetera> billeteraList;
 
     public Usuario(CrearUsuarioDTO usuario) {
