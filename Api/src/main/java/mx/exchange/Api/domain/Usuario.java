@@ -6,6 +6,7 @@ import mx.exchange.Api.dto.ActualizarUsuarioDTO;
 import mx.exchange.Api.dto.CrearUsuarioDTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -29,6 +30,9 @@ public class Usuario {
     private LocalDateTime fechaCreacion;
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    @OneToMany()
+    private List<Billetera> billeteraList;
 
     public Usuario(CrearUsuarioDTO usuario) {
         this.nombre = usuario.nombre();
