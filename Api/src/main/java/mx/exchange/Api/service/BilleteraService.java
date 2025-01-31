@@ -1,5 +1,6 @@
 package mx.exchange.Api.service;
 
+import mx.exchange.Api.dto.DepositarMXNDTO;
 import mx.exchange.Api.repository.BilleteraRepository;
 import mx.exchange.Api.repository.CriptomonedaRepository;
 import mx.exchange.Api.repository.UsuarioRepository;
@@ -20,4 +21,9 @@ public class BilleteraService {
         this.usuarioRepository = usuarioRepository;
         this.criptomonedaRepository = criptomonedaRepository;
     }
+
+    public void depositarMXN(Long idUsuario, DepositarMXNDTO depositoDTO){
+
+    }
+
 }
