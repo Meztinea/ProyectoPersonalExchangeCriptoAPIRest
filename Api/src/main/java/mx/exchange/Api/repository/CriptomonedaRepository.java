@@ -9,7 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface CriptomonedaRepository extends JpaRepository<Criptomoneda, Long> {
+
     Optional<Criptomoneda> findByTicker(String ticker);
 
     boolean existsByTicker(String ticker);
+
+    Criptomoneda getReferenceByTicker(String ticker);
 }
