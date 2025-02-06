@@ -75,6 +75,9 @@ public class CriptomonedaService {
 
             for (Criptomoneda c : listaCriptomonedas){
 
+                if (c.getTicker().equalsIgnoreCase("MXN"))
+                    continue;
+
                 String url = "https://api.bitso.com/api/v3/ticker?book=" + c.getTicker().toLowerCase(Locale.ENGLISH) + "_mxn";
 
                 // Recibe el precio de la criptomoneda real desde la API REST del Exchange Bitso

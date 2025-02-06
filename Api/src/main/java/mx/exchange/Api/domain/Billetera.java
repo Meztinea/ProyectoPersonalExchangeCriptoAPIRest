@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
+import java.math.BigDecimal;
 
 @Table(name = "billetera")
 @Entity(name = "Billetera")
@@ -28,12 +28,17 @@ public class Billetera {
     @JoinColumn(name = "id_criptomoneda")
     private Criptomoneda criptomoneda;
 
-    private Double cantidad;
+    private BigDecimal cantidad;
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    public void actualizarCantidad(BigDecimal cantidad){
+        this.cantidad = this.cantidad.add(cantidad);
+        this.fechaActualizacion = LocalDateTime.now();
+    }
 
 }

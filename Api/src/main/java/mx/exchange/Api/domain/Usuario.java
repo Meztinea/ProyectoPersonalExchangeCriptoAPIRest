@@ -34,6 +34,9 @@ public class Usuario {
     @OneToMany(targetEntity = Billetera.class, fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<Billetera> billeteraList;
 
+    @OneToMany(targetEntity = Transaccion.class, fetch = FetchType.LAZY, mappedBy = "usuario")
+    private List<Transaccion> transaccionList;
+
     public Usuario(CrearUsuarioDTO usuario) {
         this.nombre = usuario.nombre();
         this.telefono = usuario.telefono();
