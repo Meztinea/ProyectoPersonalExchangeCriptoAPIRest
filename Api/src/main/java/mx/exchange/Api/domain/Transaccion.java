@@ -28,6 +28,7 @@ public class Transaccion {
     @JoinColumn(name = "id_criptomoneda")
     private Criptomoneda criptomoneda;
 
+    @Enumerated(EnumType.STRING)
     private Tipo tipo;
 
     @Column(name = "fecha_transaccion")

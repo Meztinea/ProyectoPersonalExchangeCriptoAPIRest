@@ -1,12 +1,11 @@
 package mx.exchange.Api.service;
 
-import mx.exchange.Api.domain.Billetera;
-import mx.exchange.Api.domain.BilleteraId;
-import mx.exchange.Api.domain.Criptomoneda;
-import mx.exchange.Api.domain.Usuario;
+import jakarta.transaction.Transactional;
+import mx.exchange.Api.domain.*;
 import mx.exchange.Api.dto.DepositarMXNDTO;
 import mx.exchange.Api.repository.BilleteraRepository;
 import mx.exchange.Api.repository.CriptomonedaRepository;
+import mx.exchange.Api.repository.TransaccionRepository;
 import mx.exchange.Api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +22,21 @@ public class BilleteraService {
     private final BilleteraRepository billeteraRepository;
     private final UsuarioRepository usuarioRepository;
     private final CriptomonedaRepository criptomonedaRepository;
+    private final TransaccionRepository transaccionRepository;
 
     public BilleteraService(BilleteraRepository billeteraRepository, UsuarioRepository usuarioRepository,
-                            CriptomonedaRepository criptomonedaRepository){
+                            CriptomonedaRepository criptomonedaRepository, TransaccionRepository transaccionRepository){
         this.billeteraRepository = billeteraRepository;
         this.usuarioRepository = usuarioRepository;
         this.criptomonedaRepository = criptomonedaRepository;
+        this.transaccionRepository = transaccionRepository;
     }
 
+    @Transactional
     public void depositarMXN(Long idUsuario, DepositarMXNDTO depositoDTO){
 
         String ticker = "MXN";
+        Criptomoneda criptomoneda = criptomonedaRepository.getReferenceByTicker(ticker);
 
         // Verificar que el monto para depositar es mayor a 0
         if (depositoDTO.monto().compareTo(BigDecimal.ZERO) <= 0){
@@ -52,8 +55,6 @@ public class BilleteraService {
                 .findFirst()
                 .orElseGet(()-> {
 
-                    Criptomoneda criptomoneda = criptomonedaRepository.getReferenceByTicker(ticker);
-
                     Billetera billetera = new Billetera();
                     BilleteraId id = new BilleteraId(idUsuario, criptomoneda.getId());
                     billetera.setId(id);
@@ -66,12 +67,23 @@ public class BilleteraService {
                     return billetera;
                 });
 
-
         // Actualizar el saldo en la billetera
         billeteraMXN.actualizarCantidad(depositoDTO.monto());
 
-        // Almaceno en la BD
+        // Almacenar en la BD
         billeteraRepository.save(billeteraMXN);
+
+        // Crear una transaccion y registrar en el historial de transacciones en la BD
+        Transaccion transaccion = new Transaccion();
+        transaccion.setUsuario(usuario);
+        transaccion.setCriptomoneda(criptomoneda);
+        transaccion.setTipo(Tipo.DEPOSITO);
+        transaccion.setFechaTransaccion(LocalDateTime.now());
+        transaccion.setMontoMXN(depositoDTO.monto());
+        transaccion.setCantidadCriptomoneda(depositoDTO.monto());
+
+        transaccionRepository.save(transaccion);
+
     }
 
 }
