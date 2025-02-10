@@ -36,6 +36,16 @@ public class Billetera {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
+
+    public Billetera(Usuario usuario, Criptomoneda criptomoneda){
+        this.id = new BilleteraId(usuario.getId(), criptomoneda.getId());
+        this.usuario = usuario;
+        this.criptomoneda = criptomoneda;
+        this.cantidad = BigDecimal.ZERO; // Asigna 0 a la billetera nueva
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
     public void actualizarCantidad(BigDecimal cantidad){
         this.cantidad = this.cantidad.add(cantidad);
         this.fechaActualizacion = LocalDateTime.now();

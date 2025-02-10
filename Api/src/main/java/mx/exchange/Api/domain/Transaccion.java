@@ -2,6 +2,7 @@ package mx.exchange.Api.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mx.exchange.Api.dto.DepositarMXNDTO;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,4 +40,14 @@ public class Transaccion {
 
     @Column(name = "cantidad_criptomoneda")
     private BigDecimal cantidadCriptomoneda;
+
+    public Transaccion(Usuario usuario, Criptomoneda criptomoneda, Tipo tipo, DepositarMXNDTO depositoDTO){
+        this.usuario = usuario;
+        this.criptomoneda = criptomoneda;
+        this.tipo = tipo;
+        this.fechaTransaccion = LocalDateTime.now();
+        this.montoMXN = depositoDTO.monto();
+        this.cantidadCriptomoneda = depositoDTO.monto();
+    }
+
 }
