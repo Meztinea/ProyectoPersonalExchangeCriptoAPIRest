@@ -1,7 +1,7 @@
 package mx.exchange.Api.repository;
 
 import mx.exchange.Api.domain.Transaccion;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface TransaccionRepository extends JpaRepository<Transaccion, Long> {
+public interface TransaccionRepository extends CrudRepository<Transaccion, Long> {
 }

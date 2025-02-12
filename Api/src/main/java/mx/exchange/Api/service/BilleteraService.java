@@ -38,9 +38,8 @@ public class BilleteraService {
         String ticker = "MXN";
         Criptomoneda criptomoneda = criptomonedaRepository.getReferenceByTicker(ticker);
 
-        // Verificar que el monto para depositar es mayor a 0
+        // Verificar que el monto para depositar es mayor a 0 - Lanzar excepción
         if (depositoDTO.monto().compareTo(BigDecimal.ZERO) <= 0){
-            // Lanzar excepción indicando que el monto debe ser mayor a 0.
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "El monto para depositar debe ser mayor a 0.");
         }
@@ -54,36 +53,17 @@ public class BilleteraService {
                 .filter(billetera -> billetera.getCriptomoneda().getTicker().equals(ticker))
                 .findFirst()
                 .orElseGet(()-> {
-
-                    Billetera billetera = new Billetera();
-                    BilleteraId id = new BilleteraId(idUsuario, criptomoneda.getId());
-                    billetera.setId(id);
-                    billetera.setUsuario(usuario);
-                    billetera.setCriptomoneda(criptomoneda);
-                    billetera.setCantidad(BigDecimal.ZERO); // Asigna 0 a la billetera nueva
-                    billetera.setFechaCreacion(LocalDateTime.now());
-                    billetera.setFechaActualizacion(LocalDateTime.now());
-
-                    return billetera;
+                    // Si no tiene billetera le asigna una en "ceros" 0.00
+                    return new Billetera(usuario, criptomoneda);
                 });
 
-        // Actualizar el saldo en la billetera
+        // Actualizar el saldo en la billetera y Almacenar en la BD
         billeteraMXN.actualizarCantidad(depositoDTO.monto());
-
-        // Almacenar en la BD
         billeteraRepository.save(billeteraMXN);
 
         // Crear una transaccion y registrar en el historial de transacciones en la BD
-        Transaccion transaccion = new Transaccion();
-        transaccion.setUsuario(usuario);
-        transaccion.setCriptomoneda(criptomoneda);
-        transaccion.setTipo(Tipo.DEPOSITO);
-        transaccion.setFechaTransaccion(LocalDateTime.now());
-        transaccion.setMontoMXN(depositoDTO.monto());
-        transaccion.setCantidadCriptomoneda(depositoDTO.monto());
-
+        Transaccion transaccion = new Transaccion(usuario, criptomoneda, Tipo.DEPOSITO, depositoDTO);
         transaccionRepository.save(transaccion);
-
     }
 
 }
